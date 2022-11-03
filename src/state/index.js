@@ -8,3 +8,9 @@ const reducers = combineReducers({
 export const store = configureStore({
     reducer: reducers
 })
+
+store.subscribe(() => {
+    const state = store.getState();
+    const todos = state.todos.data;
+    localStorage.setItem("todo", JSON.stringify(todos))
+});

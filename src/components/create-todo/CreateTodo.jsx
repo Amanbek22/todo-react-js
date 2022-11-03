@@ -1,18 +1,15 @@
 import { useState } from "react";
 import "./CreateTodo.css";
+import { useDispatch } from "react-redux";
+import { todoSliceActions } from "../../state/todoSlice";
 
-// const input = document.getElementById("inp")
-
-// input.addEventListener('change', (event) => {
-//   console.log("asfag");
-// })
-
-const CreateTodo = (props) => {
+const CreateTodo = () => {
   const [value, setValue] = useState("");
+  const dispatch = useDispatch()
 
   const submit = (event) => {
     event.preventDefault();
-    props.addNewTodo(value);
+    dispatch( todoSliceActions.addTodo(value) )
     setValue("")
   };
 

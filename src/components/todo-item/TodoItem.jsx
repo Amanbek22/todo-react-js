@@ -1,14 +1,20 @@
 import { useState } from "react";
 import css from "./TodoItem.module.css";
+import { useDispatch } from "react-redux";
+import { todoSliceActions } from "../../state/todoSlice";
 
 const TodoItem = (props) => {
-  // props ===  { text: "", status: false, handleDelete(), id: 1, handleStatus() }
+  // props ===  { text: "", status: false, id: 1 }
   const [isInputShow, setInputShow ] = useState(false)
   const [inputValue, setInputValue] = useState(props.text);
+  const dispatch = useDispatch(); 
 
   const onDelete = () => {
-    props.handleDelete(props.id);
+    dispatch( todoSliceActions.deletTodo(props.id) )
   };
+  const handleStatus = () => {
+    dispatch( todoSliceActions.changeStatus(props.id) )
+  }
 
   const onEdit = () => {
     setInputShow(!isInputShow)
@@ -19,7 +25,9 @@ const TodoItem = (props) => {
   }
   const submit = (e) => {
     e.preventDefault()
-    props.handleEdit(props.id, inputValue)
+    dispatch( todoSliceActions.editTodo( 
+      { id: props.id,  newText: inputValue }
+    ) );
     setInputShow(false)
   }
   return (
@@ -32,7 +40,7 @@ const TodoItem = (props) => {
       ) : (
         <label>
           <input
-            onChange={() => props.handleStatus(props.id)}
+            onChange={handleStatus}
             type="checkbox"
             checked={props.status}
           />
